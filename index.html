@@ -1,9 +1,49 @@
 <link rel="stylesheet" href="https://generativeart.online/css/drawing-app.css">
 <script src="https://cdn.jsdelivr.net/gh/netizenorg/netnet-standard-library/build/nn.min.js"></script>
 <script>
+  emoji_grid = [['', '', '', '🧀', '🟡', '🌕', '', '', ''],
+               ['', '🍊', '🟠', '🍯', '🌟', '🌼', '🌽', '🤢', ''],
+               ['', '🥕', '🕌', '🥞', '🍦', '🥂', '🥑', '📗', ''],
+               ['❤️', '🍑', '🩰', '🏷️', '🍨', '🪄', '🐉', '🍏', '💚'],
+               ['🌹', '🦩', '🍧', '🍥', '🐩', '🕊️', '🐠', '🍀', '🐸'],
+               ['🍉', '🌺', '🎀', '🌸', '🐇', '🧊', '🩵', '🐬', '🛻'],
+               ['', '🌷', '💗', '👚', '👾', '🧞', '🐳', '🦋', ''],
+               ['', '🩷', '🦄', '👩‍🎤', '💜', '🪻', '🔵', '🌊', ''],
+               ['', '', '', '🔮', '🟣', '🌑', '', '', '']]
+  
   function initialize () {
-    document.body.css({
-    })
+    document.body.style.backgroundImage = 'url("canvas_bg.jpg")'
+    
+    const palette_div = nn.create('div').set({id: 'palette_div'})
+    .css({position: 'absolute',
+          top: '10px', 
+          right: '10px',
+          width: '300px',
+          height: '207px',
+          backgroundImage: 'url("palette.png")',
+          backgroundSize: 'contain',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          paddingTop: '16px'})
+    .addTo('body')
+    
+    for (let i = 0; i < emoji_grid.length; i++) {
+      const row = emoji_grid[i]
+      let row_div = nn.create('div').set({class: 'row'})
+      .css({display: 'flex',
+           justifyContent: 'center'}).addTo('#palette_div')
+      for (let j = 0; j < row.length; j++) {
+        nn.create('span').content(row[j]).css({
+          width: '20px',
+          height: '20px',
+          display: 'inline-flex',
+          alignItems: 'center',
+          justifyContent: 'center'
+        }).addTo(row_div)
+      }
+    }
+    
   }
   nn.on('load', initialize)
 </script>
