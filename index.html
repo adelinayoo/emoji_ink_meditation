@@ -1,7 +1,7 @@
 <link rel="stylesheet" href="https://generativeart.online/css/drawing-app.css">
 <script src="https://cdn.jsdelivr.net/gh/netizenorg/netnet-standard-library/build/nn.min.js"></script>
 <script>
-  emoji_grid = [['', '', '', '🧀', '🟡', '🌕', '', '', ''],
+  emojiGrid = [['', '', '', '🧀', '🟡', '🌕', '', '', ''],
                ['', '🍊', '🟠', '🍯', '🌟', '🌼', '🌽', '🤢', ''],
                ['', '🥕', '🕌', '🥞', '🍦', '🥂', '🥑', '📗', ''],
                ['❤️', '🍑', '🩰', '🏷️', '🍨', '🪄', '🐉', '🍏', '💚'],
@@ -11,9 +11,13 @@
                ['', '🩷', '🦄', '👩‍🎤', '💜', '🪻', '🔵', '🌊', ''],
                ['', '', '', '🔮', '🟣', '🌑', '', '', '']]
   
+  currEmoji = ''
+  currOpacity = 1
+  
   function initialize () {
     document.body.style.backgroundImage = 'url("canvas_bg.jpg")'
-    
+    document.body.style.cursor = 'url(""), auto'
+
     const palette_div = nn.create('div').set({id: 'palette_div'})
     .css({position: 'absolute',
           top: '10px', 
@@ -28,22 +32,43 @@
           paddingTop: '16px'})
     .addTo('body')
     
-    for (let i = 0; i < emoji_grid.length; i++) {
-      const row = emoji_grid[i]
+    for (let i = 0; i < emojiGrid.length; i++) {
+      const row = emojiGrid[i]
       let row_div = nn.create('div').set({class: 'row'})
       .css({display: 'flex',
            justifyContent: 'center'}).addTo('#palette_div')
       for (let j = 0; j < row.length; j++) {
-        nn.create('span').content(row[j]).css({
+        let emoji = row[j]
+        let emoji_button = nn.create('span').content(emoji).css({
           width: '20px',
           height: '20px',
           display: 'inline-flex',
           alignItems: 'center',
           justifyContent: 'center'
         }).addTo(row_div)
+        
+        if (emoji !== '') {
+          emoji_button.on('click', () => {currEmoji = emoji
+                                        currOpacity = 1})
+        }
       }
     }
     
   }
+  
+  function draw() {
+    if (nn.mouseDown) {
+      const e = nn.create('span').content(currEmoji).css({
+                fontSize: '18px',
+                position: 'absolute',
+                left: nn.mouseX,
+                top: nn.mouseY,
+                opacity: currOpacity
+                })
+                .addTo('body')
+      currOpacity -= 0.01
+    }
+  }
   nn.on('load', initialize)
+  nn.on('mousemove', draw)
 </script>
